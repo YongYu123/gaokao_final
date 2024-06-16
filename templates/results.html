@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>查询结果</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>查询结果</h1>
+        <div class="sort-section">
+            <form action="{{ url_for('search') }}" method="get">
+                <label for="sort_by">排序方式：</label>
+                <select name="sort_by" id="sort_by">
+                    <option value="位次" {% if sort_by == '位次' %}selected{% endif %}>按位次</option>
+                    <option value="学校" {% if sort_by == '学校' %}selected{% endif %}>按学校</option>
+                    <!-- 可以根据需要添加更多选项 -->
+                </select>
+                <input type="hidden" name="major" value="{{ major }}">
+                <input type="hidden" name="school" value="{{ school }}">
+                <input type="hidden" name="rank_min" value="{{ rank_min }}">
+                <input type="hidden" name="rank_max" value="{{ rank_max }}">
+                <input type="hidden" name="year" value="{{ year }}">
+                <input type="submit" value="应用">
+            </form>
+        </div>
+        {% if results %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>专业</th>
+                        <th>学校</th>
+                        <th>计划数</th>
+                        <th>位次</th>
+                        <th>年份</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for result in results %}
+                        <tr>
+                            <td>{{ result.专业 }}</td>
+                            <td>{{ result.学校 }}</td>
+                            <td>{{ result.计划数 }}</td>
+                            <td>{{ result.位次 }}</td>
+                            <td>{{ result.年份 }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <div class="pagination">
+                {% if page > 1 %}
+                    <a href="{{ url_for('search', major=request.args.get('major'), school=request.args.get('school'), rank_min=request.args.get('rank_min'), rank_max=request.args.get('rank_max'), year=request.args.get('year'), page=page-1, sort_by=sort_by) }}">Previous</a>
+                {% else %}
+                    <span class="disabled">Previous</span>
+                {% endif %}
+                {% if page < total_pages %}
+                    <a href="{{ url_for('search', major=request.args.get('major'), school=request.args.get('school'), rank_min=request.args.get('rank_min'), rank_max=request.args.get('rank_max'), year=request.args.get('year'), page=page+1, sort_by=sort_by) }}">Next</a>
+                {% else %}
+                    <span class="disabled">Next</span>
+                {% endif %}
+            </div>
+            <a href="{{ url_for('index') }}" class="back-button">返回查询页面</a>
+        {% else %}
+            <p>No results found.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

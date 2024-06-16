@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>查询网站</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>查询表单</h1>
+        <form action="{{ url_for('search') }}" method="post">
+            <label for="major">专业:</label>
+            <input type="text" id="major" name="major">
+            
+            <label for="school">学校:</label>
+            <input type="text" id="school" name="school">
+            
+            <label for="rank_min">位次最小值:</label>
+            <input type="number" id="rank_min" name="rank_min">
+            
+            <label for="rank_max">位次最大值:</label>
+            <input type="number" id="rank_max" name="rank_max">
+            
+            <label for="year">年份:</label>
+            <input type="text" id="year" name="year">
+            
+            <input type="submit" value="查询">
+        </form>
+    </div>
+</body>
+</html>
